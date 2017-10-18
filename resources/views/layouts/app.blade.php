@@ -11,70 +11,79 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/reset.css') }}" rel="stylesheet">
+    <!-- // custom css written by wael -->
+    <link href="{{ asset('css/wael.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
+    <header> 
+        <div id="logo">
+            <a class="Webtitle" href="{{ url('/') }}">
+                    Assign1
+            </a>
+             <p> Elder studio challenge test </p>
+        </div>
+        <div id="login">
+            <ul class="nav main">
+                <!-- Authentication Links -->
+                @if (Auth::guest())
+                    <li><a href="{{ url('/login') }}" class="large button green">Login</a></li>
+                    <li><a href="{{ url('/register') }}" class="large button blue">Register</a></li>
+                @else
+                    <li class="dropdown">
+                        <a href="#" class="" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <p>welcome : {{ Auth::user()->name }} <span class="caret"></span> </p>
+                            @foreach (Auth::user()->roles as $role)
+                            <p>you are : {{$role->name}}</p>
+                            @endforeach
+                            
+                        </a>
 
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="{{ url('/logout') }}" class="large button red">Logout</a></li>
 
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
+                        </ul>
+                    </li>
+                @endif
+            </ul>
+        </div>
+    </header>
+    <div id='cssmenu'>
 
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
+                <!-- Left Side Of Navbar -->
+                <ul>
+                    <li><a href="{{ url('/home') }}">Home</a></li>
+                    
+                    @if( Auth::check() )
+                    <li><a href="{{ url('/top10') }}">Top10</a></li>
+                    <li><a href="{{ url('/leaders') }}">Leader board</a></li>
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
+                        @if (auth()->user()->isAdmin())
+                        <li><a href="{{ url('admin/users') }}">Users</a></li>
+                        @endif
+                    @endif
+                    <li class='last'><a href="{{ url('/design') }}">Design</a></li>
+                </ul>
 
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        @yield('content')
+                
     </div>
+    @if(Session::has('danger'))
+    <div class="error">
+        {{ Session::get('danger') }}
+    </div>
+    @endif
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+     @if(Session::has('success'))
+    <div class="success">
+        {{ Session::get('success') }}
+    </div>
+    @endif
+    @yield('content')
+    <footer> <a href="http://www.waeltech.com">Copyright Wael Aziz U1470153 </a> </footer>
+    <!-- JavaScripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
+    
 </body>
 </html>

@@ -33,4 +33,15 @@ class HomeController extends Controller
         }
         
     }
+     public function admin(Request $request)
+    {
+        if (Auth::user()->hasRole('Admin'))
+        {
+            return view('admin');
+        }else
+        {
+            return view('home');
+        }
+        
+    }
 }

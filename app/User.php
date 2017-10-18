@@ -48,4 +48,9 @@ class User extends Authenticatable
         return view('user');
 
     }
+    // function to check if user is admin
+    public function isAdmin() 
+    {
+       return $this->roles()->where('role_id', 1)->first();
+    }
 }

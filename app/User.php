@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Role;
 
 class User extends Authenticatable
 {
@@ -26,4 +27,25 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+    public function roles()
+    {
+      return $this->belongsToMany('App\Role');
+    }
+
+    public function hasRole($role)
+    {
+      if ($this->roles()->where('name', $role)->first()) {
+        return true;
+      }
+      return false;
+    }
+
+    public function authorize($roles)
+    {
+      if ($this->hasRole($roles)) {
+        return true;
+      }
+        return view('user');
+
+    }
 }

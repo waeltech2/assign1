@@ -48,9 +48,9 @@
             </ul>
         </div>
     </header>
-    <div id='cssmenu'>
+    <!-- <div id='cssmenu'>
 
-                <!-- Left Side Of Navbar -->
+              
                 <ul>
                     <li><a href="{{ url('/home') }}">Home</a></li>
                     
@@ -66,7 +66,7 @@
                 </ul>
 
                 
-    </div>
+    </div> -->
     @if(Session::has('danger'))
     <div class="error">
         {{ Session::get('danger') }}
@@ -77,8 +77,46 @@
     <div class="success">
         {{ Session::get('success') }}
     </div>
+
     @endif
+
+
+
+    <nav class='animated bounceInDown'>
+        
+
+  <ul>
+    <li>
+      <a href='#profile'>
+        <div class='fa fa-user'></div>
+        Profile
+      </a>
+    </li>
+    <li><a href="{{ url('/home') }}">Home</a></li>
+                    
+                    @if( Auth::check() )
+                    <li><a href="{{ url('/top10') }}">Top10</a></li>
+                    <li><a href="{{ url('/leaders') }}">Leader board</a></li>
+
+                        @if (auth()->user()->isAdmin())
+                        <li><a href="{{ url('admin/users') }}">Users</a></li>
+                        @endif
+                    @endif
+                    <li class='last'><a href="{{ url('/design') }}">Design</a></li>
+                    @if (auth()->user())
+                        <li>
+                          <a href="{{url('/logout')}}">
+                            <div class='fa fa-sign-out'></div>
+                            Logout
+                          </a>
+                        </li>
+                    @endif
+    
+  </ul>
+</nav>
+    <div id="content">
     @yield('content')
+    </div>
     <footer> <a href="http://www.waeltech.com">Copyright Wael Aziz U1470153 </a> </footer>
     <!-- JavaScripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -86,4 +124,17 @@
     {{-- <script src="{{ elixir('js/app.js') }}"></script> --}}
     
 </body>
+<script>
+    $(".sub-menu ul").hide();
+$(".sub-menu a").click(function() {
+  $(this)
+    .parent(".sub-menu")
+    .children("ul")
+    .slideToggle("100");
+  $(this)
+    .find(".right")
+    .toggleClass("fa-caret-up fa-caret-down");
+});
+
+</script>
 </html>
